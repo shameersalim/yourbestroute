@@ -147,6 +147,20 @@
             getDirections(origin, destination);
         };
 
+        $scope.addressChangeHandler = function() {
+          if($scope.address1 === '' || angular.isUndefined($scope.address1)) {
+            return;
+          }
+          $rootScope.setup.address1 = $scope.address1;
+          if($scope.address2 === '' || angular.isUndefined($scope.address2)) {
+            return;
+          }
+          $rootScope.setup.address2 = $scope.address2;
+          var setupStr = JSON.stringify($rootScope.setup);
+          window.localStorage.setItem("setup", setupStr);
+          getDirections($scope.address1, $scope.address2);
+        };
+
         getWeather();
         getDirections(origin, destination);
     }

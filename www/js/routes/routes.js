@@ -14,19 +14,26 @@
 
     if ($rootScope.setup === null || angular.isUndefined($rootScope.setup)) {
       $rootScope.setup = {};
-      $rootScope.setup.address1 = $rootScope.setup.address2 = '';
+      $rootScope.setup.address1 = $rootScope.setup.address2 = {};
     }
     if ($rootScope.setup.address1 === null || angular.isUndefined($rootScope.setup.address1)) {
-      $rootScope.setup.address1 = '';
+      $rootScope.setup.address1 = {};
     }
     if ($rootScope.setup.address2 === null || angular.isUndefined($rootScope.setup.address2)) {
-      $rootScope.setup.address2 = '';
+      $rootScope.setup.address2 = {};
     }
 
-    $scope.address1 = $rootScope.setup.address1 = "3630 Sterling Magnolia Ct S, Charlotte, NC 28211";
-    $scope.address2 = $rootScope.setup.address2 = "831 E Morehead St, Charlotte, NC 28202";
+    $scope.address1 = $rootScope.setup.address1.formatted_address;
+    $scope.address2 = $rootScope.setup.address2.formatted_address;
 
     var getDirections = function(origin, destination) {
+      if(origin === null || destination === null) {
+        return;
+      }
+
+      if(angular.isUndefined(origin) || angular.isUndefined(destination)) {
+        return;
+      }
           var directionsService = new google.maps.DirectionsService;
           directionsService.route({
               origin: origin,
@@ -51,6 +58,10 @@
                   $log.log("Error in retrieving directions");
               }
           })
+      };
+
+      function getBingDirections(origin, destination) {
+
       };
 
       function getWeather() {
@@ -106,13 +117,47 @@
       $state.go('app.single');
     };
 
+    var saveInformation = function() {
+      var setupStr = JSON.stringify($rootScope.setup);
+      window.localStorage.setItem("setup", setupStr);
+    };
+
+    var address1Change = function(address) {
+      if(address === null || angular.isUndefined(address)) {
+        return;
+      }
+      $rootScope.setup.address1 = address;
+      $scope.address1 = address.formatted_address;
+
+    saveInformation();
+
+      getDirections($scope.address1, $scope.address2);
+    };
+
+    $scope.address1ChangeHandler = function(address) {
+      address1Change(address);
+    };
+
+    var address2Change = function(address) {
+      if(address === null || angular.isUndefined(address)) {
+        return;
+      }
+      $rootScope.setup.address2 = address;
+      $scope.address2 = address.formatted_address;
+
+    saveInformation();
+    getDirections($scope.address1, $scope.address2);
+    };
+
+    $scope.address2ChangeHandler = function(address) {
+      address2Change(address);
+    };
+
     $scope.getClass = function(index){
       if(index === 0) {
-        
-      } else {
-
+        return 'best-route';
       }
-    }
+    };
   };
 
 }());

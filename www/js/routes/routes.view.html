@@ -9,21 +9,25 @@
           <img src="{{imgSource}}" class="move-right"></img>
         </div> -->
     <form class="list" style="clear:both">
-      <h4>From</h4>
+      <h4>From {{originLabel}}</h4>
       <label class="item item-input">
-        <span class="input-label">{{originLabel}}</span>
+        <!-- <span class="input-label">{{originLabel}}</span> -->
         <!-- <input type="text" placeholder="" ng-model="setup.address1" ng-blur="address1ChangeHandler()"> -->
-        <input type="text" id="homeAddress" class="form-control" ng-autocomplete ng-model="address1" ng-blur="address1ChangeHandler()" />
+        <input type="text" id="homeAddress" class="form-control" g-places-autocomplete ng-model="address1"
+        ng-blur="address1ChangeHandler(address1)"
+        />
       </label>
     </form>
-    <div class="spacer" style="width: 283px; height: 21px;"></div>
+    <!-- <div class="spacer" style="width: 283px; height: 21px;"></div> -->
     <!-- <h3 id="settingsTab-heading1" style="color:#000000;">Work</h3> -->
     <form class="list">
-      <h4>To</h4>
+      <h4>To {{destinationLabel}}</h4>
       <label class="item item-input">
-        <span class="input-label">{{destinationLabel}}</span>
+        <!-- <span class="input-label">{{destinationLabel}}</span> -->
         <!-- <input type="text" placeholder="" ng-model="setup.address2" ng-blur="address2ChangeHandler()"> -->
-        <input type="text" id="workAddress" class="form-control" ng-autocomplete ng-model="address2" ng-blur="address2ChangeHandler()" />
+        <input type="text" id="workAddress" class="form-control" g-places-autocomplete ng-model="address2"
+        ng-blur="address2ChangeHandler(address2)"
+        />
       </label>
     </form>
     <button id="routesTab-button5" class="button button-positive  button-block icon ion-arrow-swap"
@@ -31,7 +35,7 @@
     <h4 id="routesTab-heading5" style="color:#000000;">Fastest Routes</h4>
     <ion-list>
       <ion-item ng-repeat="route in listOfRoutes" ng-click="routeClickHandler(route)" ng-class="getClass($index)">
-        {{route.legs[0].duration.text}} - {{route.legs[0].distance.text}} {{route.summary}}
+      {{route.legs[0].duration.text}} - {{route.legs[0].distance.text}} {{route.summary}}
       </ion-item>
     </ion-list>
     <form class="list"></form>
