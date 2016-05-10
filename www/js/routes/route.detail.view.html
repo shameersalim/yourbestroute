@@ -1,0 +1,10 @@
+<ion-view view-title="Route Detail">
+  <ion-content padding="true">
+    <h4 id="routesTab-heading5" style="color:#000000;">Route Detail</h4>
+    <ion-list>
+      <ion-item ng-repeat="step in listOfSteps">
+        <p ng-bind-html="step.instructions"></p>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

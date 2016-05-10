@@ -1,0 +1,25 @@
+<ion-view title="Routes Tab" id="page2">
+    <ion-content padding="true" class="has-header">
+        <form class="list"></form>
+        <p class="temp-suffix move-right" style="display:inline-block">{{tempDescription}}</p><br/>
+        <div>
+          <div class="temp move-right">{{temperature}}
+            <div class="temp-suffix move-right">&deg;F</div>
+          </div>
+
+        </div>
+      <p id="iconTemp" class="wi move-right"></p><br/>
+        <h4 id="routesTab-heading3" style="color:#000000;">From {{originLabel}} To {{destinationLabel}}</h4>
+        <button id="routesTab-button5" class="button button-positive  button-block icon ion-arrow-swap"
+        ng-click="switchDirections()">Switch</button>
+        <h4 id="routesTab-heading5" style="color:#000000;">Fastest Routes</h4>
+        <ion-list>
+            <ion-item ng-repeat="route in listOfRoutes">
+            {{route.legs[0].duration.text}} - {{route.legs[0].distance.text}} {{route.summary}}
+            </ion-item>
+            <!-- <ion-item>14min, no traffic, via Randolph Rd</ion-item>
+            <ion-item>16min, light traffic, via Randolph Rd</ion-item>
+            <ion-item>18min, light traffic, via Providence Rd</ion-item> -->
+        </ion-list>
+    </ion-content>
+</ion-view>

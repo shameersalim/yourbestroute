@@ -1,0 +1,46 @@
+<ion-view view-title="Your best route">
+  <ion-content padding="true" class="has-header">
+    <!-- <p class="temp-suffix move-right" style="display:inline-block">{{tempDescription}}</p><br/>
+        <div>
+          <div class="temp move-right">{{temperature}}
+            <div class="temp-suffix move-right">&deg;F</div>
+          </div>
+
+          <img src="{{imgSource}}" class="move-right"></img>
+        </div> -->
+    <form class="list" style="clear:both">
+      <h4>From</h4>
+      <label class="item item-input">
+        <span class="input-label">{{originLabel}}</span>
+        <!-- <input type="text" placeholder="" ng-model="setup.address1" ng-blur="address1ChangeHandler()"> -->
+        <input type="text" id="homeAddress" class="form-control" ng-autocomplete ng-model="address1" ng-blur="address1ChangeHandler()" />
+      </label>
+    </form>
+    <div class="spacer" style="width: 283px; height: 21px;"></div>
+    <!-- <h3 id="settingsTab-heading1" style="color:#000000;">Work</h3> -->
+    <form class="list">
+      <h4>To</h4>
+      <label class="item item-input">
+        <span class="input-label">{{destinationLabel}}</span>
+        <!-- <input type="text" placeholder="" ng-model="setup.address2" ng-blur="address2ChangeHandler()"> -->
+        <input type="text" id="workAddress" class="form-control" ng-autocomplete ng-model="address2" ng-blur="address2ChangeHandler()" />
+      </label>
+    </form>
+    <button id="routesTab-button5" class="button button-positive  button-block icon ion-arrow-swap"
+    ng-click="switchDirections()">&nbsp;&nbsp;Switch</button>
+    <h4 id="routesTab-heading5" style="color:#000000;">Fastest Routes</h4>
+    <ion-list>
+      <ion-item ng-repeat="route in listOfRoutes" ng-click="routeClickHandler(route)" ng-class="getClass($index)">
+        {{route.legs[0].duration.text}} - {{route.legs[0].distance.text}} {{route.summary}}
+      </ion-item>
+    </ion-list>
+    <form class="list"></form>
+
+  </ion-content>
+  <div id="column-content" style="position:absolute;bottom:0px;left:0px;">
+
+     <img src="{{imgSource}}" style="vertical-align:middle">
+    <span style="text-align:left"><strong>{{temperature}}&deg;</strong>&nbsp;&nbsp;{{tempDescription}}
+    </span>
+</div>
+</ion-view>
