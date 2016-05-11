@@ -11,6 +11,7 @@
     $rootScope.setup = JSON.parse(window.localStorage.getItem("setup"));
     $scope.originLabel = "Home";
     $scope.destinationLabel = "Work";
+    var BING_MAPS_KEY = 'Am5PQzEG1r-DsGOntmKzr27fPT8OmW35G15dgU4e7qojz1E6_jcqWJVYCo1QNDvY';
 
     if ($rootScope.setup === null || angular.isUndefined($rootScope.setup)) {
       $rootScope.setup = {};
@@ -58,10 +59,24 @@
                   $log.log("Error in retrieving directions");
               }
           })
+
+          getBingDirections(origin, destination);
       };
 
       function getBingDirections(origin, destination) {
+        //http://dev.virtualearth.net/REST/V1/Routes/Driving?wp.0=Minneapolis,MN&wp.1=St%20Paul,MN&optmz=distance&routeAttributes=routePath&key=Am5PQzEG1r-DsGOntmKzr27fPT8OmW35G15dgU4e7qojz1E6_jcqWJVYCo1QNDvY
+        var request = 'http://dev.virtualearth.net/REST/V1/Routes/Driving' +
+        '?wp.0=' + origin +
+        '&wp.1=' + destination +
+        '&optmz=distance&routeAttributes=routePath&key=' + BING_MAPS_KEY;
+        request = request.replace(/ /g, '%20');
+        $http.jsonp(request)
+        .success(function (result) {
 
+        })
+        .error(function(data, status, error, thing) {
+
+        })
       };
 
       function getWeather() {
