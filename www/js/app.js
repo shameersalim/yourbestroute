@@ -4,9 +4,9 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'google.places', 'starter.controllers', 'starter.services'])
+angular.module('starter', ['ionic', 'ngCordova', 'google.places', 'starter.controllers', 'starter.services'])
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, $rootScope) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -19,6 +19,38 @@ angular.module('starter', ['ionic', 'google.places', 'starter.controllers', 'sta
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
+
+    $rootScope.$on('$cordovaLocalNotification:schedule',
+      function (event, notification, state) {
+        console.log("SCHEDULE");
+        console.log('event', event);
+        console.log('notification', notification);
+        console.log('state', state);
+      });
+
+    $rootScope.$on('$cordovaLocalNotification:trigger',
+      function (event, notification, state) {
+        console.log("TRIGGER");
+        console.log('event', event);
+        console.log('notification', notification);
+        console.log('state', state);
+      });
+
+    $rootScope.$on('$cordovaLocalNotification:update',
+      function (event, notification, state) {
+        console.log('UPDATE');
+        console.log('event', event);
+        console.log('notification', notification);
+        console.log('state', state);
+      });
+
+    $rootScope.$on('$cordovaLocalNotification:cancel',
+      function (event, notification, state) {
+        console.log('CANCEL');
+        console.log('event', event);
+        console.log('notification', notification);
+        console.log('state', state);
+      });
   });
 })
 

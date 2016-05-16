@@ -39,7 +39,28 @@
       </ion-item>
     </ion-list>
     <form class="list"></form>
+    <button class="button button-block button-positive" ng-click="scheduleInstantNotification()">
+              Instant
+            </button>
 
+            <button class="button  button-block button-positive" ng-click="scheduleDelayedNotification()">
+              In 5 Sec
+            </button>
+            <button class="button button-block button-positive" ng-click="scheduleEveryMinuteNotification()">
+              Every Minute
+            </button>
+
+            <button class="button  button-block button-positive" ng-click="updateNotificationText()">
+              Update Text for Every Minute
+            </button>
+
+            <button class="button  button-block button-positive" ng-click="updateNotificationEvery()">
+              Update Every Min to Second
+            </button>
+            <button class="button  button-block button-positive" ng-click="cancelNotification()">
+              Cancel
+            </button>
+          
   </ion-content>
   <div id="column-content" style="position:absolute;bottom:0px;left:0px;">
 
