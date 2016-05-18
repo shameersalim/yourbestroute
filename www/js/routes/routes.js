@@ -264,6 +264,18 @@
             }
           });
         };
+
+        // $scope.$on('g-places-autocomplete:select', function(evt, place) {
+        //
+        // });
+
+        $scope.fromAddressSelectHandler = function(place) {
+
+        };
+
+        $scope.toAddressSelectHandler = function(place) {
+
+        };
   });
 };
 

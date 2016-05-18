@@ -30,13 +30,14 @@ angular.module('google.places', [])
         function ($parse, $compile, $timeout, $document, google) {
 
             return {
-                restrict: 'A',
+                restrict: 'AE',
                 require: '^ngModel',
                 scope: {
                     model: '=ngModel',
                     options: '=?',
                     forceSelection: '=?',
-                    customPlaces: '=?'
+                    customPlaces: '=?',
+                    addressselect: '&'
                 },
                 controller: ['$scope', function ($scope) {}],
                 link: function ($scope, element, attrs, controller) {
@@ -169,6 +170,7 @@ angular.module('google.places', [])
                                     $scope.$apply(function () {
                                         $scope.model = place;
                                         $scope.$emit('g-places-autocomplete:select', place);
+                                        $scope.addressselect({'place' : place});
                                         $timeout(function () {
                                             controller.$viewChangeListeners.forEach(function (fn) { fn(); });
                                         });
