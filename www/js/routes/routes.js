@@ -9,7 +9,7 @@
   function RoutesController($rootScope, $scope, $log, $http, $timeout, $state,
     $cordovaLocalNotification, $ionicPlatform,
   RouteService) {
-    $scope.temperature = $scope.address1 = $scope.address2 = '';
+    $scope.temperature = $scope.origin = $scope.destination = '';
     $rootScope.setup = JSON.parse(window.localStorage.getItem("setup"));
     $scope.originLabel = "Home";
     $scope.destinationLabel = "Work";
@@ -17,69 +17,23 @@
 
     if ($rootScope.setup === null || angular.isUndefined($rootScope.setup)) {
       $rootScope.setup = {};
-      $rootScope.setup.address1 = $rootScope.setup.address2 = {};
+      $rootScope.setup.origin = $rootScope.setup.destination = {};
+      $rootScope.setup.originLabel = $scope.originLabel;
+      $rootScope.setup.destinationLabel = $scope.destinationLabel;
     }
-    if ($rootScope.setup.address1 === null || angular.isUndefined($rootScope.setup.address1)) {
-      $rootScope.setup.address1 = {};
+    if ($rootScope.setup.origin === null || angular.isUndefined($rootScope.setup.origin)) {
+      $rootScope.setup.origin = {};
+      $rootScope.setup.originLabel = $scope.originLabel;
     }
-    if ($rootScope.setup.address2 === null || angular.isUndefined($rootScope.setup.address2)) {
-      $rootScope.setup.address2 = {};
+    if ($rootScope.setup.destination === null || angular.isUndefined($rootScope.setup.destination)) {
+      $rootScope.setup.destination = {};
+      $rootScope.setup.destinationLabel = $scope.destinationLabel;
     }
 
-    $scope.address1 = $rootScope.setup.address1.formatted_address;
-    $scope.address2 = $rootScope.setup.address2.formatted_address;
-
-    var getDirections = function(origin, destination) {
-      if(origin === null || destination === null) {
-        return;
-      }
-
-      if(angular.isUndefined(origin) || angular.isUndefined(destination)) {
-        return;
-      }
-          var directionsService = new google.maps.DirectionsService;
-          directionsService.route({
-              origin: origin,
-              destination: destination,
-              travelMode: google.maps.TravelMode.DRIVING,
-              provideRouteAlternatives: true
-          }, function(response, status) {
-              if (status === google.maps.DirectionsStatus.OK) {
-                  $log.log("Successfully retrieved directions");
-                  $scope.listOfRoutes = response.routes;
-                  $scope.listOfRoutes.sort(function(a, b) {
-                      if (parseInt(a.legs[0].duration.text) > parseInt(b.legs[0].duration.text)) {
-                          return 1;
-                      }
-                      if (parseInt(a.legs[0].duration.text) < parseInt(b.legs[0].duration.text)) {
-                          return -1;
-                      }
-                      return 0;
-                  });
-                  $scope.$apply();
-              } else {
-                  $log.log("Error in retrieving directions");
-              }
-          })
-
-          getBingDirections(origin, destination);
-      };
-
-      function getBingDirections(origin, destination) {
-        //http://dev.virtualearth.net/REST/V1/Routes/Driving?wp.0=Minneapolis,MN&wp.1=St%20Paul,MN&optmz=distance&routeAttributes=routePath&key=Am5PQzEG1r-DsGOntmKzr27fPT8OmW35G15dgU4e7qojz1E6_jcqWJVYCo1QNDvY
-        var request = 'http://dev.virtualearth.net/REST/V1/Routes/Driving' +
-        '?wp.0=' + origin +
-        '&wp.1=' + destination +
-        '&optmz=distance&routeAttributes=routePath&key=' + BING_MAPS_KEY;
-        request = request.replace(/ /g, '%20');
-        $http.jsonp(request)
-        .success(function (result) {
-
-        })
-        .error(function(data, status, error, thing) {
-
-        })
-      };
+    $scope.origin = $rootScope.setup.origin;
+    $scope.destination = $rootScope.setup.destination;
+    $scope.originLabel = $rootScope.setup.originLabel;
+    $scope.destinationLabel = $rootScope.setup.destinationLabel;
 
       function getWeather() {
 
@@ -109,24 +63,79 @@
 
       }
 
+      function getBingDirections(origin, destination) {
+        //http://dev.virtualearth.net/REST/V1/Routes/Driving?wp.0=Minneapolis,MN&wp.1=St%20Paul,MN&optmz=distance&routeAttributes=routePath&key=Am5PQzEG1r-DsGOntmKzr27fPT8OmW35G15dgU4e7qojz1E6_jcqWJVYCo1QNDvY
+        var request = 'http://dev.virtualearth.net/REST/V1/Routes/Driving' +
+        '?wp.0=' + origin +
+        '&wp.1=' + destination +
+        '&optmz=distance&routeAttributes=routePath&jsonp=JSON_CALLBACK&key=' + BING_MAPS_KEY;
+        request = request.replace(/ /g, '%20');
+        $http.jsonp(request)
+        .success(function (result) {
+
+        })
+        .error(function(data, status, error, thing) {
+
+        })
+      };
+
+      var getDirections = function(origin, destination) {
+        if(origin === null || destination === null) {
+          return;
+        }
+
+        if(angular.isUndefined(origin) || angular.isUndefined(destination)) {
+          return;
+        }
+            var directionsService = new google.maps.DirectionsService;
+            directionsService.route({
+                origin: origin,
+                destination: destination,
+                travelMode: google.maps.TravelMode.DRIVING,
+                provideRouteAlternatives: true
+            }, function(response, status) {
+                if (status === google.maps.DirectionsStatus.OK) {
+                    $log.log("Successfully retrieved directions");
+                    $scope.listOfRoutes = response.routes;
+                    $scope.listOfRoutes.sort(function(a, b) {
+                        if (parseInt(a.legs[0].duration.text) > parseInt(b.legs[0].duration.text)) {
+                            return 1;
+                        }
+                        if (parseInt(a.legs[0].duration.text) < parseInt(b.legs[0].duration.text)) {
+                            return -1;
+                        }
+                        return 0;
+                    });
+                    $scope.$apply();
+                } else {
+                    $log.log("Error in retrieving directions");
+                }
+            })
+            getBingDirections(origin, destination);
+        };
+
       $scope.switchDirections = function() {
-        var temp = $scope.address1;
-        $scope.address1 = $scope.address2;
-        $scope.address2 = temp;
+        var temp = $scope.origin;
+        $scope.origin = $scope.destination;
+        $scope.destination = temp;
         if($scope.originLabel == 'Home' && $scope.destinationLabel == 'Work') {
           $scope.originLabel = 'Work';
           $scope.destinationLabel = 'Home';
-          getDirections($scope.address1, $scope.address2);
+          getDirections($scope.origin, $scope.destination);
         } else {
           $scope.originLabel = 'Home';
           $scope.destinationLabel = 'Work';
-          getDirections($scope.address1, $scope.address2);
+          getDirections($scope.origin, $scope.destination);
         }
-
+        $rootScope.setup.origin = $scope.origin;
+        $rootScope.setup.originLabel = $scope.originLabel;
+        $rootScope.setup.destination = $scope.destination;
+        $rootScope.setup.destinationLabel = $scope.destinationLabel;
+        saveInformation();
 
       };
 
-      getDirections($scope.address1, $scope.address2);
+      getDirections($scope.origin, $scope.destination);
       getWeather();
 
     $scope.routeClickHandler = function(route) {
@@ -139,35 +148,37 @@
       window.localStorage.setItem("setup", setupStr);
     };
 
-    var address1Change = function(address) {
+    var originChange = function(address) {
       if(address === null || angular.isUndefined(address)) {
         return;
       }
-      $rootScope.setup.address1 = address;
-      $scope.address1 = address.formatted_address;
+      $rootScope.setup.origin = address.formatted_address;
+      $rootScope.setup.originLabel = $scope.originLabel;
+      $scope.origin = address.formatted_address;
 
     saveInformation();
 
-      getDirections($scope.address1, $scope.address2);
+      getDirections($scope.origin, $scope.destination);
     };
 
-    $scope.address1ChangeHandler = function(address) {
-      address1Change(address);
-    };
-
-    var address2Change = function(address) {
+    var destinationChange = function(address) {
       if(address === null || angular.isUndefined(address)) {
         return;
       }
-      $rootScope.setup.address2 = address;
-      $scope.address2 = address.formatted_address;
+      $rootScope.setup.destination = address.formatted_address;
+      $rootScope.setup.destinationLabel = $scope.destinationLabel;
+      $scope.destination = address.formatted_address;
 
     saveInformation();
-    getDirections($scope.address1, $scope.address2);
+    getDirections($scope.origin, $scope.destination);
     };
 
-    $scope.address2ChangeHandler = function(address) {
-      address2Change(address);
+    $scope.fromAddressSelectHandler = function(place) {
+      originChange(place);
+    };
+
+    $scope.toAddressSelectHandler = function(place) {
+      destinationChange(place);
     };
 
     $scope.getClass = function(index){
@@ -265,17 +276,6 @@
           });
         };
 
-        // $scope.$on('g-places-autocomplete:select', function(evt, place) {
-        //
-        // });
-
-        $scope.fromAddressSelectHandler = function(place) {
-
-        };
-
-        $scope.toAddressSelectHandler = function(place) {
-
-        };
   });
 };
 

@@ -13,8 +13,8 @@
       <label class="item item-input">
         <!-- <span class="input-label">{{originLabel}}</span> -->
         <!-- <input type="text" placeholder="" ng-model="setup.address1" ng-blur="address1ChangeHandler()"> -->
-        <input type="text" id="homeAddress" class="form-control" g-places-autocomplete ng-model="address1"
-        ng-blur="address1ChangeHandler(address1)" addressselect="fromAddressSelectHandler(place)"
+        <input type="text" id="homeAddress" class="form-control" g-places-autocomplete ng-model="origin"
+        addressselect="fromAddressSelectHandler(place)"
         />
       </label>
     </form>
@@ -25,8 +25,8 @@
       <label class="item item-input">
         <!-- <span class="input-label">{{destinationLabel}}</span> -->
         <!-- <input type="text" placeholder="" ng-model="setup.address2" ng-blur="address2ChangeHandler()"> -->
-        <input type="text" id="workAddress" class="form-control" g-places-autocomplete ng-model="address2"
-        ng-blur="address2ChangeHandler(address2)" change="changeHandler" addressselect="toAddressSelectHandler(place)"
+        <input type="text" id="workAddress" class="form-control" g-places-autocomplete ng-model="destination"
+        addressselect="toAddressSelectHandler(place)"
         />
       </label>
     </form>
