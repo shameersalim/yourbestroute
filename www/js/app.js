@@ -67,7 +67,8 @@ angular.module('starter', ['ionic', 'ngCordova', 'google.places', 'starter.contr
     url: '/settings',
     views: {
       'menuContent': {
-        templateUrl: 'js/settings/settings.view.html'
+        templateUrl: 'js/settings/settings.view.html',
+        controller : 'SettingsController'
       }
     }
   })

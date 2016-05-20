@@ -1,5 +1,41 @@
 <ion-view view-title="Settings">
   <ion-content>
-    <h1>Settings</h1>
+    <div class="scroll padding">
+      <h4 id="settings-heading4" style="color:#000000;" class=" ">Temperature</h4>
+      <form id="settings-form4" class="list ng-pristine ng-valid">
+        <label class="item item-radio" id="settings-radio1">
+          <input type="radio" name="radio-group" value="celsius" ng-model="temperatureFormat" ng-change="radioButtonChangeHandler('celsius')">
+          <div class="radio-content">
+            <div class="item-content disable-pointer-events" >
+              <span>Degree Celsius</span>
+            </div>
+            <i class="radio-icon disable-pointer-events icon ion-checkmark"></i>
+          </div>
+        </label>
+        <label class="item item-radio" id="settings-radio2">
+          <input type="radio" name="radio-group" value="farenheit" ng-model="temperatureFormat" ng-change="radioButtonChangeHandler('farenheit')">
+          <div class="radio-content">
+            <div class="item-content disable-pointer-events" n>
+              <span>Farenheit</span>
+            </div>
+            <i class="radio-icon disable-pointer-events icon ion-checkmark"></i>
+          </div>
+        </label>
+      </form>
+      <h4 id="settings-heading5" style="color:#000000;" class=" ">Go to Work at</h4>
+      <form id="settings-form5" class="list ng-pristine ng-valid">
+        <label class="item item-input " id="settings-input3">
+          <span class="input-label" aria-label="AM" id="_label-2">AM</span>
+          <input type="time" placeholder="adfadf" ng-model="setup.homeToWorkTime">
+        </label>
+      </form>
+      <h4 id="settings-heading6" style="color:#000000;" class=" ">Go Home at</h4>
+      <form id="settings-form6" class="list ng-pristine ng-valid">
+        <label class="item item-input " id="settings-input5">
+          <span class="input-label" aria-label="PM" id="_label-3">PM</span>
+          <input type="time" placeholder="Work time" ng-model="setup.workToHomeTime">
+        </label>
+      </form>
+    </div>
   </ion-content>
 </ion-view>
